@@ -1,29 +1,45 @@
 /**
  * Punkt wejścia bota.
  *
- * Na razie minimalny: loguje się, weryfikuje, że skrypt `setup` został
- * uruchomiony (istnieje plik z ID) i czeka na zdarzenia.
- *
- * Kolejne kroki (osobne moduły): kanał z wyborem ról oraz logika nadawania
- * roli "Zatwierdzony" po wybraniu wszystkich wymaganych ról.
+ *  - na starcie publikuje/odświeża panel wyboru ról w kanale ROLES_CHANNEL_ID,
+ *  - obsługuje interakcje panelu (wybór ról + nadawanie roli „Zatwierdzony”).
  */
-import { Client, Events, GatewayIntentBits } from 'discord.js';
+import { ChannelType, Client, Events, GatewayIntentBits, type TextChannel } from 'discord.js';
 import { env } from './config/env.js';
-import { loadIds } from './config/ids.js';
+import { buildRegistry } from './roles/registry.js';
+import { publishOrRefreshPanel } from './roles/publish.js';
+import { handleRoleInteraction } from './roles/handler.js';
 
-const ids = loadIds();
-if (!ids) {
-  console.warn(
-    '⚠️  Brak pliku src/config/ids.generated.json — uruchom najpierw `pnpm setup`.',
-  );
-}
+const registry = buildRegistry();
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
+  // Wystarczy intent Guilds — pojedynczego członka pobieramy przez REST
+  // (guild.members.fetch), więc uprzywilejowany GuildMembers nie jest potrzebny.
+  intents: [GatewayIntentBits.Guilds],
 });
 
-client.once(Events.ClientReady, (c) => {
+client.once(Events.ClientReady, async (c) => {
   console.log(`✅ Bot online jako ${c.user.tag}`);
+
+  if (!env.rolesChannelId) {
+    console.warn('⚠️  Brak ROLES_CHANNEL_ID w .env — panel ról nie zostanie opublikowany.');
+    return;
+  }
+
+  try {
+    const channel = await c.channels.fetch(env.rolesChannelId);
+    if (!channel || channel.type !== ChannelType.GuildText) {
+      console.error('❌ ROLES_CHANNEL_ID nie wskazuje na kanał tekstowy.');
+      return;
+    }
+    await publishOrRefreshPanel(channel as TextChannel, registry);
+  } catch (err) {
+    console.error('❌ Nie udało się opublikować panelu ról:', err);
+  }
+});
+
+client.on(Events.InteractionCreate, (interaction) => {
+  void handleRoleInteraction(interaction, registry);
 });
 
 client.login(env.token).catch((err) => {

@@ -13,4 +13,6 @@ export const env = {
   guildId: required('GUILD_ID'),
   // CLIENT_ID nie jest wymagane do skryptu setup, więc czytamy opcjonalnie
   clientId: process.env.CLIENT_ID?.trim() ?? '',
+  // Kanał, w którym publikowany jest panel wyboru ról
+  rolesChannelId: process.env.ROLES_CHANNEL_ID?.trim() ?? '',
 };
