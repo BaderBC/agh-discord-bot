@@ -1,0 +1,12 @@
+services:
+  bot:
+    build: .
+    image: agh-discord-bot
+    container_name: agh-discord-bot
+    # Bot sam się podniesie po restarcie VPS-a / crashu — "ustaw i zapomnij".
+    restart: unless-stopped
+    # Uzupełnij zmienne w pliku .env (patrz .env.example).
+    env_file:
+      - .env
+    # Prawidłowe zarządzanie procesem PID 1 (sygnały -> graceful stop).
+    init: true
