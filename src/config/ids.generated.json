@@ -1,0 +1,394 @@
+{
+  "updatedAt": "2026-07-14T17:57:44.910Z",
+  "guildId": "1526527810716438622",
+  "kierunkiCategoryIds": [
+    "1526648722967105556",
+    "1526648847416299692"
+  ],
+  "approvedRoleId": "1526648714909847634",
+  "kierunki": {
+    "automatyka-i-robotyka": {
+      "name": "Automatyka i Robotyka",
+      "roleId": "1526648723730333930",
+      "channelId": "1526648725819228161"
+    },
+    "automatyka-przemyslowa-i-robotyka": {
+      "name": "Automatyka Przemysłowa i Robotyka",
+      "roleId": "1526648727018930429",
+      "channelId": "1526648728675549285"
+    },
+    "budownictwo": {
+      "name": "Budownictwo",
+      "roleId": "1526648729275338905",
+      "channelId": "1526648730877427834"
+    },
+    "computer-science": {
+      "name": "Computer Science",
+      "roleId": "1526648731716554824",
+      "channelId": "1526648733494808768"
+    },
+    "ceramika": {
+      "name": "Ceramika",
+      "roleId": "1526648734128013465",
+      "channelId": "1526648735726178554"
+    },
+    "computer-physics": {
+      "name": "Computer Physics",
+      "roleId": "1526648736611307564",
+      "channelId": "1526648738326642920"
+    },
+    "computer-science-for-embedded-systems": {
+      "name": "Computer Science for Embedded Systems",
+      "roleId": "1526648739274686554",
+      "channelId": "1526648740814000359"
+    },
+    "cyberbezpieczenstwo": {
+      "name": "Cyberbezpieczeństwo",
+      "roleId": "1526648741795336273",
+      "channelId": "1526648742932123718"
+    },
+    "cyfryzacja-przemyslu": {
+      "name": "Cyfryzacja Przemysłu",
+      "roleId": "1526648743451951516",
+      "channelId": "1526648744739733617"
+    },
+    "edukacja-techniczno-informatyczna": {
+      "name": "Edukacja Techniczno-Informatyczna",
+      "roleId": "1526648746195288295",
+      "channelId": "1526648747306778638"
+    },
+    "ekologiczne-zrodla-energii": {
+      "name": "Ekologiczne Źródła Energii",
+      "roleId": "1526648748560875611",
+      "channelId": "1526648749793874090"
+    },
+    "ekoprojektowanie-i-cyfryzacja-technologii-materialowych": {
+      "name": "Ekoprojektowanie i Cyfryzacja Technologii Materiałowych",
+      "roleId": "1526648750531936417",
+      "channelId": "1526648751903608872"
+    },
+    "elektronika": {
+      "name": "Elektronika",
+      "roleId": "1526648752738275480",
+      "channelId": "1526648753413685560"
+    },
+    "elektronika-i-telekomunikacja": {
+      "name": "Elektronika i Telekomunikacja",
+      "roleId": "1526648754709598429",
+      "channelId": "1526648756244578609"
+    },
+    "elektrotechnika": {
+      "name": "Elektrotechnika",
+      "roleId": "1526648757574172804",
+      "channelId": "1526648758920806552"
+    },
+    "energetyka": {
+      "name": "Energetyka",
+      "roleId": "1526648760174772284",
+      "channelId": "1526648761303040141"
+    },
+    "energetyka-odnawialna-i-zarzadzanie-energia": {
+      "name": "Energetyka Odnawialna i Zarządzanie Energią",
+      "roleId": "1526648761961680928",
+      "channelId": "1526648763739930878"
+    },
+    "fizyka-medyczna": {
+      "name": "Fizyka Medyczna",
+      "roleId": "1526648764994031747",
+      "channelId": "1526648766273159189"
+    },
+    "fizyka-techniczna": {
+      "name": "Fizyka Techniczna",
+      "roleId": "1526648766969549055",
+      "channelId": "1526648769003782316"
+    },
+    "geodezja-i-kartografia": {
+      "name": "Geodezja i Kartografia",
+      "roleId": "1526648769884455204",
+      "channelId": "1526648771629285546"
+    },
+    "geofizyka": {
+      "name": "Geofizyka",
+      "roleId": "1526648772611018822",
+      "channelId": "1526648773936419039"
+    },
+    "geoinformatyka": {
+      "name": "Geoinformatyka",
+      "roleId": "1526648775219744798",
+      "channelId": "1526648776641613946"
+    },
+    "geologia-stosowana": {
+      "name": "Geologia Stosowana",
+      "roleId": "1526648777560031362",
+      "channelId": "1526648778734698596"
+    },
+    "geology-of-natural-resources": {
+      "name": "Geology of Natural Resources",
+      "roleId": "1526648780135465124",
+      "channelId": "1526648781993410610"
+    },
+    "geotechnologie-otworowe": {
+      "name": "Geotechnologie Otworowe",
+      "roleId": "1526648783058899005",
+      "channelId": "1526648784455598090"
+    },
+    "geoturystyka": {
+      "name": "Geoturystyka",
+      "roleId": "1526648785386864782",
+      "channelId": "1526648786536104057"
+    },
+    "informatyka-zarzadzanie-bezpieczenstwem-informacji": {
+      "name": "Informatyka - Zarządzanie Bezpieczeństwem Informacji",
+      "roleId": "1526648787525959981",
+      "channelId": "1526648788712820856"
+    },
+    "informatyka": {
+      "name": "Informatyka",
+      "roleId": "1526648789773844490",
+      "channelId": "1526648791740973168"
+    },
+    "informatyka-geoprzestrzenna": {
+      "name": "Informatyka Geoprzestrzenna",
+      "roleId": "1526648793104253210",
+      "channelId": "1526648795138621491"
+    },
+    "informatyka-i-ekonometria": {
+      "name": "Informatyka i Ekonometria",
+      "roleId": "1526648796430467175",
+      "channelId": "1526648798133092546"
+    },
+    "informatyka-i-systemy-inteligentne": {
+      "name": "Informatyka i Systemy Inteligentne",
+      "roleId": "1526648799068688738",
+      "channelId": "1526648799982915666"
+    },
+    "informatyka-medyczna": {
+      "name": "Informatyka Medyczna",
+      "roleId": "1526648801367036089",
+      "channelId": "1526648802482720979"
+    },
+    "informatyka-spoleczna": {
+      "name": "Informatyka Społeczna",
+      "roleId": "1526648803506126978",
+      "channelId": "1526648804915544134"
+    },
+    "informatyka-stosowana": {
+      "name": "Informatyka Stosowana",
+      "roleId": "1526648806131630263",
+      "channelId": "1526648807100649596"
+    },
+    "informatyka-techniczna": {
+      "name": "Informatyka Techniczna",
+      "roleId": "1526648808325517312",
+      "channelId": "1526648809378287778"
+    },
+    "inzynieria-akustyczna": {
+      "name": "Inżynieria Akustyczna",
+      "roleId": "1526648810254762226",
+      "channelId": "1526648812016504953"
+    },
+    "inzynieria-biomedyczna": {
+      "name": "Inżynieria Biomedyczna",
+      "roleId": "1526648813027065957",
+      "channelId": "1526648814272909464"
+    },
+    "inzynieria-gornicza": {
+      "name": "Inżynieria Górnicza",
+      "roleId": "1526648815120158763",
+      "channelId": "1526648816705736856"
+    },
+    "inzynieria-i-analiza-danych": {
+      "name": "Inżynieria i Analiza Danych",
+      "roleId": "1526648817196204336",
+      "channelId": "1526648818660282559"
+    },
+    "inzynieria-i-monitoring-srodowiska": {
+      "name": "Inżynieria i Monitoring Środowiska",
+      "roleId": "1526648820379680798",
+      "channelId": "1526648821923184751"
+    },
+    "inzynieria-i-ochrona-srodowiska": {
+      "name": "Inżynieria i Ochrona Środowiska",
+      "roleId": "1526648823336927232",
+      "channelId": "1526648825391874068"
+    },
+    "inzynieria-i-zarzadzanie-procesami-przemyslowymi": {
+      "name": "Inżynieria i Zarządzanie Procesami Przemysłowymi",
+      "roleId": "1526648826566541433",
+      "channelId": "1526648828189737102"
+    },
+    "inzynieria-ksztaltowania-srodowiska": {
+      "name": "Inżynieria Kształtowania Środowiska",
+      "roleId": "1526648829032792265",
+      "channelId": "1526648830102208693"
+    },
+    "inzynieria-materialowa": {
+      "name": "Inżynieria Materiałowa",
+      "roleId": "1526648831188402217",
+      "channelId": "1526648832656408617"
+    },
+    "inzynieria-mechaniczna-i-materialowa": {
+      "name": "Inżynieria Mechaniczna i Materiałowa",
+      "roleId": "1526648834183135533",
+      "channelId": "1526648835319926906"
+    },
+    "inzynieria-mechatroniczna": {
+      "name": "Inżynieria Mechatroniczna",
+      "roleId": "1526648836229955615",
+      "channelId": "1526648837299765380"
+    },
+    "inzynieria-metali": {
+      "name": "Inżynieria Metali",
+      "roleId": "1526648838167990272",
+      "channelId": "1526648839258378270"
+    },
+    "inzynieria-metali-niezelaznych": {
+      "name": "Inżynieria Metali Nieżelaznych",
+      "roleId": "1526648840365674759",
+      "channelId": "1526648842001449201"
+    },
+    "inzynieria-naftowa-i-gazownicza": {
+      "name": "Inżynieria Naftowa i Gazownicza",
+      "roleId": "1526648843255545947",
+      "channelId": "1526648844295602317"
+    },
+    "inzynieria-obliczeniowa": {
+      "name": "Inżynieria Obliczeniowa",
+      "roleId": "1526648845256360067",
+      "channelId": "1526648846594216058"
+    },
+    "inzynieria-procesow-przemyslowych": {
+      "name": "Inżynieria Procesów Przemysłowych",
+      "roleId": "1526648849169645638",
+      "channelId": "1526648851052761128"
+    },
+    "inzynieria-produkcji-i-jakosci": {
+      "name": "Inżynieria Produkcji i Jakości",
+      "roleId": "1526648852084424874",
+      "channelId": "1526648853007302797"
+    },
+    "inzynieria-wzornictwa-i-jubilerstwo": {
+      "name": "Inżynieria Wzornictwa i Jubilerstwo",
+      "roleId": "1526648855532277793",
+      "channelId": "1526648856484516044"
+    },
+    "komputerowe-wspomaganie-procesow-inzynierskich": {
+      "name": "Komputerowe Wspomaganie Procesów Inżynierskich",
+      "roleId": "1526648857835077783",
+      "channelId": "1526648859097301022"
+    },
+    "komputerowo-wspomagana-inzynieria-materialow-budowlanych": {
+      "name": "Komputerowo Wspomagana Inżynieria Materiałów Budowlanych",
+      "roleId": "1526648860276162630",
+      "channelId": "1526648861647704164"
+    },
+    "kulturoznawstwo": {
+      "name": "Kulturoznawstwo",
+      "roleId": "1526648862893408256",
+      "channelId": "1526648863958761504"
+    },
+    "matematyka": {
+      "name": "Matematyka",
+      "roleId": "1526648865590083635",
+      "channelId": "1526648867020476604"
+    },
+    "mechanical-engineering": {
+      "name": "Mechanical Engineering",
+      "roleId": "1526648868488347803",
+      "channelId": "1526648870548013228"
+    },
+    "mechanika-i-budowa-maszyn": {
+      "name": "Mechanika i Budowa Maszyn",
+      "roleId": "1526648871466565802",
+      "channelId": "1526648872779386991"
+    },
+    "mechatronic-engineering-with-english-as-instruction-language": {
+      "name": "Mechatronic Engineering (with English as instruction language)",
+      "roleId": "1526648873890611331",
+      "channelId": "1526648875249700914"
+    },
+    "mikro-i-nanotechnologie-w-biofizyce": {
+      "name": "Mikro- i Nanotechnologie w Biofizyce",
+      "roleId": "1526648876847595550",
+      "channelId": "1526648878508806155"
+    },
+    "mikroelektronika-w-technice-i-medycynie": {
+      "name": "Mikroelektronika w Technice i Medycynie",
+      "roleId": "1526648879720956084",
+      "channelId": "1526648881193025606"
+    },
+    "nanoinzynieria-materialow": {
+      "name": "Nanoinżynieria Materiałów",
+      "roleId": "1526648882203852850",
+      "channelId": "1526648883659411486"
+    },
+    "nowoczesne-technologie-paliwowe": {
+      "name": "Nowoczesne Technologie Paliwowe",
+      "roleId": "1526648884259197081",
+      "channelId": "1526648885357969620"
+    },
+    "nowoczesne-technologie-w-kryminalistyce": {
+      "name": "Nowoczesne Technologie w Kryminalistyce",
+      "roleId": "1526648886398156912",
+      "channelId": "1526648887677288661"
+    },
+    "rewitalizacja-terenow-zdegradowanych": {
+      "name": "Rewitalizacja Terenów Zdegradowanych",
+      "roleId": "1526648889283973330",
+      "channelId": "1526648890252726533"
+    },
+    "socjologia": {
+      "name": "Socjologia",
+      "roleId": "1526648891833974944",
+      "channelId": "1526648893050192065"
+    },
+    "space-engineering": {
+      "name": "Space Engineering",
+      "roleId": "1526648893633335460",
+      "channelId": "1526648895189418199"
+    },
+    "technologia-chemiczna": {
+      "name": "Technologia Chemiczna",
+      "roleId": "1526648896590315560",
+      "channelId": "1526648897450017093"
+    },
+    "technologie-przemyslu-4-0": {
+      "name": "Technologie Przemysłu 4.0",
+      "roleId": "1526648898981204252",
+      "channelId": "1526648900126114053"
+    },
+    "teleinformatyka": {
+      "name": "Teleinformatyka",
+      "roleId": "1526648901770412233",
+      "channelId": "1526648903494271076"
+    },
+    "tworzenie-przestrzeni-wirtualnych-i-gier": {
+      "name": "Tworzenie Przestrzeni Wirtualnych i Gier",
+      "roleId": "1526648904303775808",
+      "channelId": "1526648906581016828"
+    },
+    "tworzywa-i-technologie-motoryzacyjne": {
+      "name": "Tworzywa i Technologie Motoryzacyjne",
+      "roleId": "1526648907587915999",
+      "channelId": "1526648909152124970"
+    },
+    "zarzadzanie": {
+      "name": "Zarządzanie",
+      "roleId": "1526648910481981460",
+      "channelId": "1526648911727562893"
+    },
+    "zarzadzanie-i-inzynieria-produkcji": {
+      "name": "Zarządzanie i Inżynieria Produkcji",
+      "roleId": "1526648912725938268",
+      "channelId": "1526648913925509364"
+    }
+  },
+  "extraRoles": {
+    "Kobieta": "1526648715589455945",
+    "Mężczyzna": "1526648717040685397",
+    "Pierwszak": "1526648718181269604",
+    "Senior": "1526648718978453611",
+    "Po technikum": "1526648720358244604",
+    "Po liceum": "1526648721935171835"
+  }
+}

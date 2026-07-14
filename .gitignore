@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+*.log
+
+# Wygenerowane przez skrypt setup — zawiera ID ról i kanałów
+# (commit'ujemy, jeśli chcemy trzymać ID w repo — patrz README)
+# src/config/ids.generated.json
