@@ -9,17 +9,26 @@ import { env } from './config/env.js';
 import { buildRegistry } from './roles/registry.js';
 import { publishOrRefreshPanel } from './roles/publish.js';
 import { handleRoleInteraction } from './roles/handler.js';
+import { STATS_COMMAND, handleStatsCommand } from './roles/stats.js';
 
 const registry = buildRegistry();
 
 const client = new Client({
-  // Wystarczy intent Guilds — pojedynczego członka pobieramy przez REST
-  // (guild.members.fetch), więc uprzywilejowany GuildMembers nie jest potrzebny.
-  intents: [GatewayIntentBits.Guilds],
+  // GuildMembers (uprzywilejowany intent) jest potrzebny do zliczania liczby
+  // osób na poszczególnych rolach kierunków w komendzie /stats.
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
 });
 
 client.once(Events.ClientReady, async (c) => {
   console.log(`✅ Bot online jako ${c.user.tag}`);
+
+  try {
+    // Rejestracja komend slash na serwerze (natychmiastowa dla komend gildii).
+    const guild = await c.guilds.fetch(env.guildId);
+    await guild.commands.set([STATS_COMMAND]);
+  } catch (err) {
+    console.error('❌ Nie udało się zarejestrować komend slash:', err);
+  }
 
   if (!env.rolesChannelId) {
     console.warn('⚠️  Brak ROLES_CHANNEL_ID w .env — panel ról nie zostanie opublikowany.');
@@ -39,6 +48,10 @@ client.once(Events.ClientReady, async (c) => {
 });
 
 client.on(Events.InteractionCreate, (interaction) => {
+  if (interaction.isChatInputCommand() && interaction.commandName === STATS_COMMAND.name) {
+    void handleStatsCommand(interaction, registry);
+    return;
+  }
   void handleRoleInteraction(interaction, registry);
 });
 
