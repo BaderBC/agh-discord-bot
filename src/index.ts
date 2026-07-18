@@ -10,6 +10,7 @@ import { buildRegistry } from './roles/registry.js';
 import { publishOrRefreshPanel } from './roles/publish.js';
 import { handleRoleInteraction } from './roles/handler.js';
 import { STATS_COMMAND, handleStatsCommand } from './roles/stats.js';
+import { GENDER_RATIO_COMMAND, handleGenderRatioCommand } from './roles/genderRatio.js';
 
 const registry = buildRegistry();
 
@@ -25,7 +26,7 @@ client.once(Events.ClientReady, async (c) => {
   try {
     // Rejestracja komend slash na serwerze (natychmiastowa dla komend gildii).
     const guild = await c.guilds.fetch(env.guildId);
-    await guild.commands.set([STATS_COMMAND]);
+    await guild.commands.set([STATS_COMMAND, GENDER_RATIO_COMMAND]);
   } catch (err) {
     console.error('❌ Nie udało się zarejestrować komend slash:', err);
   }
@@ -50,6 +51,10 @@ client.once(Events.ClientReady, async (c) => {
 client.on(Events.InteractionCreate, (interaction) => {
   if (interaction.isChatInputCommand() && interaction.commandName === STATS_COMMAND.name) {
     void handleStatsCommand(interaction, registry);
+    return;
+  }
+  if (interaction.isChatInputCommand() && interaction.commandName === GENDER_RATIO_COMMAND.name) {
+    void handleGenderRatioCommand(interaction, registry);
     return;
   }
   void handleRoleInteraction(interaction, registry);
