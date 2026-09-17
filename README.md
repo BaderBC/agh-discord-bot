@@ -1,5 +1,6 @@
 # AGH Discord bot
 
+
 Role selection, automatic **Zatwierdzony ✅** approval, `/stats`, and
 `/proporcje-plci`, hosted on Cloudflare Workers.
 
