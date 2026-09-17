@@ -26,8 +26,8 @@ export function botInfoEmbed(build: BuildInfo, registry: Registry, runtime: Runt
   const built = builtAt && Number.isFinite(builtAt.getTime())
     ? new Intl.DateTimeFormat('en-US', {
       year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit',
-      hour12: false, timeZone: 'UTC',
-    }).format(builtAt) + ' UTC'
+      hour12: false, timeZone: 'Europe/Warsaw',
+    }).format(builtAt) + ' (Warsaw)'
     : unavailable;
   const datacenter = typeof runtime.datacenter === 'string' && /^[A-Z0-9]{3}$/.test(runtime.datacenter)
     ? runtime.datacenter : unavailable;

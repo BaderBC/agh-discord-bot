@@ -197,12 +197,15 @@ test('info command replies publicly with allowlisted English diagnostics and no 
   } finally { globalThis.fetch = oldFetch; }
 });
 
-test('info uses a real commit link and UTC build time, with honest unavailable fallbacks', () => {
+test('info uses a real commit link and Warsaw build time, with DST and unavailable fallbacks', () => {
   const commit = 'abc1234' + '0'.repeat(33);
   const embed = botInfoEmbed({ version: '0.2.0', commit, builtAt: '2026-09-17T16:30:00.000Z' }, registry,
     { platform: 'Cloudflare Workers', interactions: 'HTTP', datacenter: 'WAW' });
   assert.equal(embed.fields![1].value, `[\`abc1234\`](https://github.com/BaderBC/agh-discord-bot/commit/${commit})`);
-  assert.match(embed.fields![2].value, /September 17, 2026/); assert.match(embed.fields![2].value, /16:30 UTC/);
+  assert.match(embed.fields![2].value, /September 17, 2026/); assert.match(embed.fields![2].value, /18:30 \(Warsaw\)/);
+  const winter = botInfoEmbed({ version: '0.2.0', commit, builtAt: '2026-01-17T16:30:00.000Z' }, registry,
+    { platform: 'Cloudflare Workers', interactions: 'HTTP' });
+  assert.match(winter.fields![2].value, /January 17, 2026/); assert.match(winter.fields![2].value, /17:30 \(Warsaw\)/);
   const local = botInfoEmbed({ version: '0.2.0', commit: null, builtAt: null }, registry, { platform: 'Node.js', interactions: 'Gateway' });
   for (const index of [1, 2, 5]) assert.equal(local.fields![index].value, 'Local / unavailable');
   const malformed = botInfoEmbed({ version: '0.2.0', commit: 'not-a-commit', builtAt: 'invalid-date' }, registry,

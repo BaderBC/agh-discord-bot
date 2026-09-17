@@ -5,7 +5,7 @@ Role selection, automatic **Zatwierdzony ✅** approval, `/stats`, and
 `/proporcje-plci`, and `/agh-bot-info`, hosted on Cloudflare Workers.
 
 `/agh-bot-info` replies publicly in English with the package version, a GitHub
-commit link, UTC build time, platform, interaction transport, the Cloudflare
+commit link, Warsaw build time (including daylight-saving adjustments), platform, interaction transport, the Cloudflare
 datacenter serving the request, and configured course/role-group counts. It uses
 only an explicit list of public fields and makes no external API requests.
 Build metadata is generated locally from `package.json` and Cloudflare's
