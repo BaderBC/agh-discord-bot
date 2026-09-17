@@ -4,6 +4,7 @@ import { buildRegistry } from '../roles/registry.js';
 import { buildPanelEmbed, PANEL_MARKER } from '../roles/publish.js';
 import { buildGroupRows, buildOpenKierunekRow } from '../roles/components.js';
 import { STATS_COMMAND, GENDER_RATIO_COMMAND } from '../roles/reports.js';
+import { INFO_COMMAND } from '../roles/info.js';
 import { DiscordAPI } from '../worker/discord.js';
 
 const api = new DiscordAPI(env.token, Date.now() + 60_000);
@@ -11,7 +12,7 @@ const app = await api.call<{ id: string }>('GET', '/oauth2/applications/@me');
 const registry = buildRegistry();
 if (registry.guildId !== env.guildId) throw new Error('Generated registry does not match GUILD_ID');
 // Upsert each command independently, preserving any unrelated commands.
-for (const command of [STATS_COMMAND, GENDER_RATIO_COMMAND]) {
+for (const command of [STATS_COMMAND, GENDER_RATIO_COMMAND, INFO_COMMAND]) {
   await api.call('POST', `/applications/${app.id}/guilds/${env.guildId}/commands`, command);
 }
 console.log('Slash commands synchronized.');

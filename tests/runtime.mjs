@@ -1,10 +1,14 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { generateKeyPairSync, sign } from 'node:crypto';
 import { Miniflare, createFetchMock } from 'miniflare';
 
 // Exercise the actual compiled Durable Object and SQLite storage in workerd.
 // Every outbound request is mocked; this test cannot contact Discord.
 const registry = JSON.parse(readFileSync('src/config/registry.generated.json', 'utf8'));
+const buildInfo = JSON.parse(readFileSync('src/config/build.generated.json', 'utf8'));
+const keys = generateKeyPairSync('ed25519');
+const publicKey = keys.publicKey.export({ type: 'spki', format: 'der' }).subarray(-32).toString('hex');
 const group = registry.groups[0];
 const roles = new Set(['unrelated', ...registry.groups.map(g => g.roleIds[0]), registry.kierunki[0].roleId, registry.approvedRoleId]);
 const mutations = [];
@@ -32,7 +36,7 @@ const mf = new Miniflare({
   workers: [
     {
       name: 'bot', modules: true, scriptPath: 'dist/worker/index.js', compatibilityDate: '2026-05-15',
-      bindings: { DISCORD_TOKEN: 'test-token' }, fetchMock: mock,
+      bindings: { DISCORD_TOKEN: 'test-token', DISCORD_PUBLIC_KEY: publicKey, DISCORD_APPLICATION_ID: '123' }, fetchMock: mock,
       durableObjects: { ROLE_COORDINATORS: { className: 'RoleCoordinator', useSQLite: true } },
     },
     {
@@ -47,6 +51,22 @@ const mf = new Miniflare({
   ],
 });
 try {
+  const bot = await mf.getWorker('bot');
+  const body = JSON.stringify({ id: '456', type: 2, application_id: '123', guild_id: registry.guildId,
+    token: 'private-interaction-token', data: { type: 1, name: 'agh-bot-info' } });
+  const timestamp = String(Math.floor(Date.now() / 1000));
+  const info = await bot.fetch('http://test/interactions', { method: 'POST', body, headers: {
+    'X-Signature-Timestamp': timestamp,
+    'X-Signature-Ed25519': sign(null, Buffer.from(timestamp + body), keys.privateKey).toString('hex'),
+  } });
+  assert.equal(info.status, 200);
+  const infoBody = await info.json();
+  assert.equal(infoBody.type, 4); assert.equal(infoBody.data.flags, undefined);
+  const fields = Object.fromEntries(infoBody.data.embeds[0].fields.map(field => [field.name, field.value]));
+  assert.equal(fields.Version, `\`${buildInfo.version}\``);
+  assert.equal(fields.Platform, 'Cloudflare Workers');
+  assert.doesNotMatch(JSON.stringify(infoBody), /test-token|private-interaction-token/);
+  console.log('PASS: compiled info command returns public build metadata inside workerd.');
   const harness = await mf.getWorker('harness');
   const choice = (id, role) => ({ interactionId: id, userId: '999', groupId: group.id, roleId: role, deadline: Date.now() + 20_000 });
   const first = choice('interaction-1', group.roleIds[1]);

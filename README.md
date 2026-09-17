@@ -2,7 +2,17 @@
 
 
 Role selection, automatic **Zatwierdzony ✅** approval, `/stats`, and
-`/proporcje-plci`, hosted on Cloudflare Workers.
+`/proporcje-plci`, and `/agh-bot-info`, hosted on Cloudflare Workers.
+
+`/agh-bot-info` replies publicly in English with the package version, a GitHub
+commit link, UTC build time, platform, interaction transport, the Cloudflare
+datacenter serving the request, and configured course/role-group counts. It uses
+only an explicit list of public fields and makes no external API requests.
+Build metadata is generated locally from `package.json` and Cloudflare's
+`WORKERS_CI_COMMIT_SHA` (or a clean local Git checkout). `pnpm run deploy` refreshes
+the build timestamp; no extra API keys or build secrets are required. Missing
+metadata displays as `Local / unavailable`. The Gateway fallback reports Node.js
+and Gateway, with no commit/build timestamp.
 
 ## Production
 
@@ -78,7 +88,7 @@ The existing commands and panel survive deployment. Use these only when changing
 their definitions or creating a new panel:
 
 ```sh
-pnpm sync:discord                         # upsert both commands
+pnpm sync:discord                         # upsert all three commands
 pnpm sync:discord --panel                 # also edit the existing recent panel
 pnpm sync:discord --panel --create-panel  # allow creation if no panel was found
 ```

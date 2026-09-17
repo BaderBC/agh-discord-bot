@@ -1,6 +1,6 @@
 {
   "name": "agh-discord-bot",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Discord bot do zarządzania serwerem dla pierwszaków AGH",
   "type": "module",
   "packageManager": "pnpm@10.24.0",
@@ -16,7 +16,7 @@
     "dev:gateway": "tsx watch src/index.ts",
     "build:registry": "tsx src/scripts/build-registry.ts",
     "test": "pnpm build:registry && tsx --test tests/*.test.ts",
-    "deploy": "wrangler deploy",
+    "deploy": "pnpm build:registry --refresh-build-info && wrangler deploy",
     "check:deploy": "wrangler deploy --dry-run --outdir dist/worker",
     "sync:discord": "tsx src/scripts/sync-discord.ts",
     "test:runtime": "pnpm check:deploy && node tests/runtime.mjs"

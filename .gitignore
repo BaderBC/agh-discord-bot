@@ -6,6 +6,7 @@ dist/
 .pnpm-store/
 .dev.vars*
 src/config/registry.generated.json
+src/config/build.generated.json
 
 # Wygenerowane przez skrypt setup — zawiera ID ról i kanałów
 # (commit'ujemy, jeśli chcemy trzymać ID w repo — patrz README)

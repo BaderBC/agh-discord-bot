@@ -11,8 +11,11 @@ import { publishOrRefreshPanel } from './roles/publish.js';
 import { handleRoleInteraction } from './roles/handler.js';
 import { STATS_COMMAND, handleStatsCommand } from './roles/stats.js';
 import { GENDER_RATIO_COMMAND, handleGenderRatioCommand } from './roles/genderRatio.js';
+import { readFileSync } from 'node:fs';
+import { botInfoEmbed, INFO_COMMAND } from './roles/info.js';
 
 const registry = buildRegistry();
+const { version } = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')) as { version: string };
 
 const client = new Client({
   // GuildMembers (uprzywilejowany intent) jest potrzebny do zliczania liczby
@@ -26,7 +29,7 @@ client.once(Events.ClientReady, async (c) => {
   try {
     // Rejestracja komend slash na serwerze (natychmiastowa dla komend gildii).
     const guild = await c.guilds.fetch(env.guildId);
-    await guild.commands.set([STATS_COMMAND, GENDER_RATIO_COMMAND]);
+    await guild.commands.set([STATS_COMMAND, GENDER_RATIO_COMMAND, INFO_COMMAND]);
   } catch (err) {
     console.error('❌ Nie udało się zarejestrować komend slash:', err);
   }
@@ -49,6 +52,13 @@ client.once(Events.ClientReady, async (c) => {
 });
 
 client.on(Events.InteractionCreate, (interaction) => {
+  if (interaction.isChatInputCommand() && interaction.commandName === INFO_COMMAND.name) {
+    void interaction.reply({
+      embeds: [botInfoEmbed({ version, commit: null, builtAt: null }, registry, { platform: 'Node.js', interactions: 'Gateway' })],
+      allowedMentions: { parse: [] },
+    }).catch(() => console.error('Could not deliver bot info reply'));
+    return;
+  }
   if (interaction.isChatInputCommand() && interaction.commandName === STATS_COMMAND.name) {
     void handleStatsCommand(interaction, registry);
     return;

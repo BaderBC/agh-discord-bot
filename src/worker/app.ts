@@ -1,6 +1,8 @@
 import type { APIInteraction, APIMessageComponentInteraction, RESTPatchAPIWebhookWithTokenMessageJSONBody } from 'discord-api-types/v10';
 import { buildKierunekComponents, CUSTOM_ID, kierunkiPageCount, KIERUNKI_PAGE_SIZE } from '../roles/components.js';
 import { genderRatioEmbed, GENDER_RATIO_COMMAND, statsEmbeds, STATS_COMMAND } from '../roles/reports.js';
+import { botInfoEmbed, INFO_COMMAND } from '../roles/info.js';
+import buildInfo from '../config/build.generated.json';
 import { DiscordAPI, countRoles } from './discord.js';
 import type { Env } from './env.js';
 import { registry } from './registry.js';
@@ -101,6 +103,12 @@ export default {
     }
     if (interaction.type === 2 && interaction.data.type === 1) {
       const name = interaction.data.name;
+      if (name === INFO_COMMAND.name) {
+        return json({ type: 4, data: {
+          embeds: [botInfoEmbed(buildInfo, registry, { platform: 'Cloudflare Workers', interactions: 'HTTP', datacenter: request.cf?.colo })],
+          allowed_mentions: { parse: [] },
+        } });
+      }
       if (name !== STATS_COMMAND.name && name !== GENDER_RATIO_COMMAND.name) return privateReply('Nieznana komenda.');
       deferWork(interaction, env, ctx, async deadline => {
         const counts = await countRoles(new DiscordAPI(env.DISCORD_TOKEN, deadline), registry.guildId);

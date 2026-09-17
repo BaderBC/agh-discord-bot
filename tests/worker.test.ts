@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { generateKeyPairSync, sign } from 'node:crypto';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import app from '../src/worker/app.js';
 import { registry } from '../src/worker/registry.js';
 import type { Env } from '../src/worker/env.js';
@@ -8,6 +10,8 @@ import { planChoice } from '../src/roles/choice.js';
 import { statsEmbeds, genderRatioEmbed } from '../src/roles/reports.js';
 import { DiscordAPI, countRoles } from '../src/worker/discord.js';
 import { applyRoleChoice } from '../src/worker/role-service.js';
+import { botInfoEmbed } from '../src/roles/info.js';
+import buildInfo from '../src/config/build.generated.json';
 
 const keys = generateKeyPairSync('ed25519');
 const publicKey = keys.publicKey.export({ type: 'spki', format: 'der' }).subarray(-32).toString('hex');
@@ -170,4 +174,58 @@ test('course selections defer an update, and failed role writes produce a visibl
     await Promise.all(jobs);
     assert.equal(replies.length, 1); assert.match(replies[0].content, /Nie udało/);
   } finally { globalThis.fetch = oldFetch; }
+});
+
+test('info command replies publicly with allowlisted English diagnostics and no API/background work', async () => {
+  const oldFetch = globalThis.fetch;
+  globalThis.fetch = async () => { throw new Error('Info must not call an API'); };
+  try {
+    const infoRequest = request({ ...component({}), type: 2, data: { type: 1, name: 'agh-bot-info' } });
+    Object.defineProperty(infoRequest, 'cf', { value: { colo: 'WAW', city: 'PRIVATE_CITY', asOrganization: 'PRIVATE_NETWORK' } });
+    const privateEnv = { ...env, DISCORD_TOKEN: 'SECRET_BOT_TOKEN', UNRELATED_SECRET: 'SECRET_SENTINEL' };
+    const response = await app.fetch(infoRequest, privateEnv, ctx);
+    const body = await response.json() as any;
+    assert.equal(body.type, 4); assert.equal(body.data.flags, undefined);
+    assert.deepEqual(body.data.allowed_mentions, { parse: [] });
+    assert.equal(body.data.embeds[0].title, 'ℹ️ AGH Bot — Info');
+    const fields = Object.fromEntries(body.data.embeds[0].fields.map((field: any) => [field.name, field.value]));
+    assert.deepEqual(Object.keys(fields), ['Version', 'Commit', 'Built', 'Platform', 'Interactions', 'Datacenter', 'Configuration']);
+    assert.equal(fields.Version, `\`${buildInfo.version}\``);
+    assert.equal(fields.Platform, 'Cloudflare Workers'); assert.equal(fields.Interactions, 'HTTP');
+    assert.equal(fields.Datacenter, 'WAW'); assert.equal(fields.Configuration, '75 courses · 3 role groups');
+    assert.doesNotMatch(JSON.stringify(body), /SECRET_|PRIVATE_|test-token|1526527810716438622/);
+  } finally { globalThis.fetch = oldFetch; }
+});
+
+test('info uses a real commit link and UTC build time, with honest unavailable fallbacks', () => {
+  const commit = 'abc1234' + '0'.repeat(33);
+  const embed = botInfoEmbed({ version: '0.2.0', commit, builtAt: '2026-09-17T16:30:00.000Z' }, registry,
+    { platform: 'Cloudflare Workers', interactions: 'HTTP', datacenter: 'WAW' });
+  assert.equal(embed.fields![1].value, `[\`abc1234\`](https://github.com/BaderBC/agh-discord-bot/commit/${commit})`);
+  assert.match(embed.fields![2].value, /September 17, 2026/); assert.match(embed.fields![2].value, /16:30 UTC/);
+  const local = botInfoEmbed({ version: '0.2.0', commit: null, builtAt: null }, registry, { platform: 'Node.js', interactions: 'Gateway' });
+  for (const index of [1, 2, 5]) assert.equal(local.fields![index].value, 'Local / unavailable');
+  const malformed = botInfoEmbed({ version: '0.2.0', commit: 'not-a-commit', builtAt: 'invalid-date' }, registry,
+    { platform: 'Cloudflare Workers', interactions: 'HTTP', datacenter: '@everyone' });
+  for (const index of [1, 2, 5]) assert.equal(malformed.fields![index].value, 'Local / unavailable');
+});
+
+test('build metadata captures the CI commit and current build time without bundling environment secrets', () => {
+  const target = new URL('../src/config/build.generated.json', import.meta.url);
+  const previous = readFileSync(target, 'utf8');
+  const commit = '1234567' + 'a'.repeat(33);
+  const started = Date.now();
+  try {
+    const run = (args: string[]) => execFileSync(process.execPath, ['--import', 'tsx', 'src/scripts/build-registry.ts', ...args], {
+      env: { ...process.env, WORKERS_CI_COMMIT_SHA: commit, DISCORD_TOKEN: 'SECRET_BUILD_SENTINEL' }, stdio: 'pipe',
+    });
+    run(['--refresh-build-info']);
+    const built = JSON.parse(readFileSync(target, 'utf8'));
+    assert.deepEqual(Object.keys(built).sort(), ['builtAt', 'commit', 'version']);
+    assert.equal(built.commit, commit); assert.equal(built.version, buildInfo.version);
+    assert.ok(Date.parse(built.builtAt) >= started && Date.parse(built.builtAt) <= Date.now());
+    assert.ok(!JSON.stringify(built).includes('SECRET_BUILD_SENTINEL'));
+    run([]);
+    assert.deepEqual(JSON.parse(readFileSync(target, 'utf8')), built, 'watch rebuilds must not endlessly refresh their own input');
+  } finally { writeFileSync(target, previous); }
 });
