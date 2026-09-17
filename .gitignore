@@ -2,6 +2,10 @@ node_modules/
 dist/
 .env
 *.log
+.wrangler/
+.pnpm-store/
+.dev.vars*
+src/config/registry.generated.json
 
 # Wygenerowane przez skrypt setup — zawiera ID ról i kanałów
 # (commit'ujemy, jeśli chcemy trzymać ID w repo — patrz README)

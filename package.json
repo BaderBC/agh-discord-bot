@@ -10,17 +10,29 @@
   "scripts": {
     "setup": "tsx src/scripts/setup.ts",
     "start": "tsx src/index.ts",
-    "dev": "tsx watch src/index.ts",
-    "typecheck": "tsc --noEmit",
-    "build": "tsc"
+    "dev": "wrangler dev",
+    "typecheck": "pnpm build:registry && tsc --noEmit",
+    "build": "pnpm build:registry && tsc",
+    "dev:gateway": "tsx watch src/index.ts",
+    "build:registry": "tsx src/scripts/build-registry.ts",
+    "test": "pnpm build:registry && tsx --test tests/*.test.ts",
+    "deploy": "wrangler deploy",
+    "check:deploy": "wrangler deploy --dry-run --outdir dist/worker",
+    "sync:discord": "tsx src/scripts/sync-discord.ts",
+    "test:runtime": "pnpm check:deploy && node tests/runtime.mjs"
   },
   "dependencies": {
+    "@discordjs/builders": "^1.14.1",
+    "discord-api-types": "^0.38.55",
     "discord.js": "^14.16.3",
     "dotenv": "^16.4.5"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260515.1",
     "@types/node": "^22.9.0",
+    "miniflare": "4.20260515.0",
     "tsx": "^4.19.2",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "wrangler": "4.92.0"
   }
 }

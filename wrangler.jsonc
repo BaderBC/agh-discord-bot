@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "agh-discord-bot",
+  "account_id": "91cb9a26f43ebc04482202b41fd4d7cf",
+  "main": "src/worker/index.ts",
+  "compatibility_date": "2026-05-15",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [{ "pattern": "agh-bot.bstrama.com", "custom_domain": true }],
+  "build": { "command": "pnpm build:registry" },
+  "limits": { "cpu_ms": 30000 },
+  "observability": { "enabled": true },
+  "vars": {
+    "DISCORD_APPLICATION_ID": "1526645992433385604",
+    "DISCORD_PUBLIC_KEY": "762bedf034a17bcc5ccca15b11417b24c7095b64ee84d21a63f899934ba2ec5d"
+  },
+  "durable_objects": {
+    "bindings": [{ "name": "ROLE_COORDINATORS", "class_name": "RoleCoordinator" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["RoleCoordinator"] }]
+}

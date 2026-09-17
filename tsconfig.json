@@ -15,7 +15,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "declaration": false,
-    "sourceMap": true
+    "sourceMap": true,
+    "types": ["node", "@cloudflare/workers-types"]
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]

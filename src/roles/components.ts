@@ -8,10 +8,10 @@
 import {
   ActionRowBuilder,
   ButtonBuilder,
-  ButtonStyle,
   StringSelectMenuBuilder,
   StringSelectMenuOptionBuilder,
-} from 'discord.js';
+} from '@discordjs/builders';
+import { ButtonStyle } from 'discord-api-types/v10';
 import type { Registry } from './registry.js';
 
 export const CUSTOM_ID = {
@@ -60,7 +60,7 @@ export function buildOpenKierunekRow(): ActionRowBuilder<ButtonBuilder> {
     new ButtonBuilder()
       .setCustomId(CUSTOM_ID.openKierunek)
       .setLabel('Wybierz kierunek')
-      .setEmoji('📚')
+      .setEmoji({ name: '📚' })
       .setStyle(ButtonStyle.Primary),
   );
 }
@@ -101,7 +101,7 @@ export function buildKierunekComponents(
     new ButtonBuilder()
       .setCustomId(`${CUSTOM_ID.pagePrefix}${safePage - 1}`)
       .setLabel('Poprzednia')
-      .setEmoji('⬅️')
+      .setEmoji({ name: '⬅️' })
       .setStyle(ButtonStyle.Secondary)
       .setDisabled(safePage === 0),
     new ButtonBuilder()
@@ -112,7 +112,7 @@ export function buildKierunekComponents(
     new ButtonBuilder()
       .setCustomId(`${CUSTOM_ID.pagePrefix}${safePage + 1}`)
       .setLabel('Następna')
-      .setEmoji('➡️')
+      .setEmoji({ name: '➡️' })
       .setStyle(ButtonStyle.Secondary)
       .setDisabled(safePage >= pages - 1),
   );

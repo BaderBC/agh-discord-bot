@@ -10,7 +10,7 @@ import { buildGroupRows, buildOpenKierunekRow } from './components.js';
 /** Znacznik w stopce embeda, po którym rozpoznajemy nasz panel. */
 export const PANEL_MARKER = 'agh-role-panel';
 
-function buildPanelEmbed(registry: Registry): EmbedBuilder {
+export function buildPanelEmbed(registry: Registry): EmbedBuilder {
   const groupLines = registry.groups
     .map((g) => `• **${g.label}** — ${g.options.map((o) => o.label).join(' / ')}`)
     .join('\n');

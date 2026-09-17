@@ -15,82 +15,18 @@ import {
 import type { Registry } from './registry.js';
 import { CUSTOM_ID, buildKierunekComponents } from './components.js';
 
-type ApprovalChange = 'granted' | 'revoked' | 'unchanged';
+import { planChoice, statusMessage, type ApprovalChange } from './choice.js';
 
-function managedRoleIds(registry: Registry): Set<string> {
-  const set = new Set<string>(registry.kierunkiRoleIds);
-  for (const g of registry.groups) g.roleIds.forEach((id) => set.add(id));
-  set.add(registry.approvedRoleId);
-  return set;
-}
-
-/** Zwraca listę wciąż brakujących kategorii do zatwierdzenia. */
-function missingForApproval(desired: Set<string>, registry: Registry): string[] {
-  const missing: string[] = [];
-  for (const g of registry.groups) {
-    if (g.requiredForApproval && !g.roleIds.some((id) => desired.has(id))) {
-      missing.push(g.label);
-    }
-  }
-  if (![...registry.kierunkiRoleIds].some((id) => desired.has(id))) {
-    missing.push('Kierunek');
-  }
-  return missing;
-}
-
-/**
- * Ustala docelowy zestaw ról (exkluzywnie w obrębie grupy), przelicza status
- * „Zatwierdzony” i stosuje minimalny diff na członku.
- */
 async function applyExclusiveChoice(
   member: GuildMember,
   groupRoleIds: readonly string[],
   chosenRoleId: string,
   registry: Registry,
 ): Promise<{ change: ApprovalChange; missing: string[] }> {
-  const desired = new Set(member.roles.cache.keys());
-  for (const id of groupRoleIds) desired.delete(id);
-  desired.add(chosenRoleId);
-
-  const missing = missingForApproval(desired, registry);
-  const approved = missing.length === 0;
-  const hadApproved = desired.has(registry.approvedRoleId);
-
-  let change: ApprovalChange = 'unchanged';
-  if (approved && !hadApproved) {
-    desired.add(registry.approvedRoleId);
-    change = 'granted';
-  } else if (!approved && hadApproved) {
-    desired.delete(registry.approvedRoleId);
-    change = 'revoked';
-  }
-
-  const managed = managedRoleIds(registry);
-  const current = new Set(member.roles.cache.keys());
-  const toAdd = [...desired].filter((id) => !current.has(id));
-  const toRemove = [...current].filter((id) => !desired.has(id) && managed.has(id));
-
-  if (toRemove.length) await member.roles.remove(toRemove, 'Panel ról AGH');
-  if (toAdd.length) await member.roles.add(toAdd, 'Panel ról AGH');
-
-  return { change, missing };
-}
-
-function statusMessage(
-  chosenLabel: string,
-  change: ApprovalChange,
-  missing: string[],
-): string {
-  if (change === 'granted') {
-    return `✅ Ustawiono: **${chosenLabel}**.\n🎉 Masz komplet ról — otrzymujesz **Zatwierdzony ✅** i widzisz resztę serwera!`;
-  }
-  if (change === 'revoked') {
-    return `♻️ Ustawiono: **${chosenLabel}**. Odebrano **Zatwierdzony** — brakuje: ${missing.join(', ')}.`;
-  }
-  if (missing.length) {
-    return `✅ Ustawiono: **${chosenLabel}**.\nPozostało jeszcze wybrać: **${missing.join(', ')}**.`;
-  }
-  return `✅ Ustawiono: **${chosenLabel}**.`;
+  const plan = planChoice([...member.roles.cache.keys()], groupRoleIds, chosenRoleId, registry);
+  if (plan.toRemove.length) await member.roles.remove(plan.toRemove, 'Panel ról AGH');
+  if (plan.toAdd.length) await member.roles.add(plan.toAdd, 'Panel ról AGH');
+  return { change: plan.change, missing: plan.missing };
 }
 
 async function getMember(interaction: Interaction): Promise<GuildMember | null> {
